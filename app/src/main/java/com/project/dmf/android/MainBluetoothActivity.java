@@ -31,6 +31,28 @@ public class MainBluetoothActivity extends ActionBarActivity {
     static TextView textSpace;
     ConnectionThread connect;
 
+    public static void spliText(Message msg) {
+        Bundle bundle = msg.getData();
+        byte[] dados = bundle.getByteArray("data");
+        String dataString = new String(dados);
+
+        //Pega a data
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        Date data = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(data);
+        Date dataAtual = cal.getTime();
+
+        //faz a separação da string de dados
+        String[] sp = dataString.split("|");
+        String Token = sp[0];
+        String CodigoCenario = sp[1];
+        String SerieEquipamento = sp[2];
+        String Sensor = sp[3];
+        String Temperatura = sp[4];
+        String DataCompleta = dateFormat.format(dataAtual);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,25 +162,10 @@ public class MainBluetoothActivity extends ActionBarActivity {
                 statusMessage.setText("Conectado!");
             else if(!dataString.equals("|A")) {
                 //coloquei esse (!dataString.edquals("|A")
-                textSpace.setText(new String(dados));
+                //textSpace.setText(new String(dados));
 
-                //Pega a data
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-                Date data = new Date();
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(data);
-                Date dataAtual = cal.getTime();
-
-                //faz a separação da string de dados
                 String[] sp = dataString.split("|");
-                String Token = sp[0];
-                String CodigoCenario = sp[1];
-                String SerieEquipamento = sp[2];
-                String Sensor = sp[3];
-                String Temperatura = sp[4];
-                String DataCompleta = dateFormat.format(dataAtual);
-
-                statusMessage.setText(CodigoCenario + "\n" + DataCompleta);
+                textSpace.setText(sp[1]);
             }
         }
     };
