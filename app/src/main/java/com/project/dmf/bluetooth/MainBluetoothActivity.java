@@ -121,7 +121,8 @@ public class MainBluetoothActivity extends ActionBarActivity {
                 statusMessage.setText("Ocorreu um erro durante a conexão.");
             else if(dataString.equals("---S"))
                 statusMessage.setText("Conectado!");
-            else {
+            else if(dataString.equals("|A")) {
+                //coloquei esse (dataString.edquals("|A")
                 textSpace.setText(new String(data));
             }
         }
