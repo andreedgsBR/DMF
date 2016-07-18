@@ -126,7 +126,7 @@ public class MainBluetoothActivity extends ActionBarActivity {
     }
 
     //public static Handler handler = new Handler() {
-    public Handler handler = new Handler() {
+    public static Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
 
@@ -158,8 +158,7 @@ public class MainBluetoothActivity extends ActionBarActivity {
                 String Temperatura = split[4];
                 String DataCompleta = dateFormat.format(dataAtual);
 
-                msg(CodigoCenario);
-                msg(DataCompleta);
+                statusMessage.setText(CodigoCenario + "\n" + DataCompleta);
             }
         }
     };
