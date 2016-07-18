@@ -1,21 +1,28 @@
-package com.project.dragaosemchama.dmf;
+package com.project.dmf.bluetooth;
 
+import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.app.ListActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.Set;
+import com.project.dragaosemchama.dmf.R;
 
-public class PairedDevices extends ListActivity {
+public class DiscoveredDevices extends ListActivity {
+
+    /*  Um adaptador para conter os elementos da lista de dispositivos descobertos.
+     */
+    ArrayAdapter<String> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,24 +35,25 @@ public class PairedDevices extends ListActivity {
         ListView lv = getListView();
         LayoutInflater inflater = getLayoutInflater();
         View header = inflater.inflate(R.layout.text_header, lv, false);
-        ((TextView) header.findViewById(R.id.textView)).setText("\nDispositivos pareados\n");
+        ((TextView) header.findViewById(R.id.textView)).setText("\nDispositivos próximos\n");
         lv.addHeaderView(header, null, false);
 
-        /*  Usa o adaptador Bluetooth para obter uma lista de dispositivos pareados.
+        /*  Cria um modelo para a lista e o adiciona à tela.
+            Para adicionar um elemento à lista, usa-se arrayAdapter.add().
+         */
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        setListAdapter(arrayAdapter);
+
+        /*  Usa o adaptador Bluetooth padrão para iniciar o processo de descoberta.
          */
         BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
-        Set<BluetoothDevice> pairedDevices = btAdapter.getBondedDevices();
+        btAdapter.startDiscovery();
 
-        /*  Cria um modelo para a lista e o adiciona à tela.
-            Se houver dispositivos pareados, adiciona cada um à lista.
+        /*  Cria um filtro que captura o momento em que um dispositivo é descoberto.
+            Registra o filtro e define um receptor para o evento de descoberta.
          */
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        setListAdapter(adapter);
-        if (pairedDevices.size() > 0) {
-            for (BluetoothDevice device : pairedDevices) {
-                adapter.add(device.getName() + "\n" + device.getAddress());
-            }
-        }
+        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        registerReceiver(receiver, filter);
     }
 
     /*  Este método é executado quando o usuário seleciona um elemento da lista.
@@ -70,6 +78,39 @@ public class PairedDevices extends ListActivity {
         returnIntent.putExtra("btDevAddress", devAddress);
         setResult(RESULT_OK, returnIntent);
         finish();
+    }
+
+    /*  Define um receptor para o evento de descoberta de dispositivo.
+     */
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
+
+        /*  Este método é executado sempre que um novo dispositivo for descoberto.
+         */
+        public void onReceive(Context context, Intent intent) {
+
+            /*  Obtem o Intent que gerou a ação.
+                Verifica se a ação corresponde à descoberta de um novo dispositivo.
+                Obtem um objeto que representa o dispositivo Bluetooth descoberto.
+                Exibe seu nome e endereço na lista.
+             */
+            String action = intent.getAction();
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                arrayAdapter.add(device.getName() + "\n" + device.getAddress());
+            }
+        }
+    };
+
+    /*  Executado quando a Activity é finalizada.
+     */
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
+
+        /*  Remove o filtro de descoberta de dispositivos do registro.
+         */
+        unregisterReceiver(receiver);
     }
 
     @Override

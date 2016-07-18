@@ -1,4 +1,4 @@
-package com.project.dragaosemchama.bluetooth;
+package com.project.dmf.bluetooth;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
@@ -11,9 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.project.dragaosemchama.dmf.ConnectionThread;
-import com.project.dragaosemchama.dmf.DiscoveredDevices;
-import com.project.dragaosemchama.dmf.PairedDevices;
+import com.project.dmf.bluetooth.ConnectionThread;
+import com.project.dmf.bluetooth.DiscoveredDevices;
+import com.project.dmf.bluetooth.PairedDevices;
 import com.project.dragaosemchama.dmf.R;
 
 public class MainBluetoothActivity extends ActionBarActivity {

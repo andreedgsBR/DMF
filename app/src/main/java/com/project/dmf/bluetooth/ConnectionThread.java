@@ -1,4 +1,4 @@
-package com.project.dragaosemchama.dmf;
+package com.project.dmf.bluetooth;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
