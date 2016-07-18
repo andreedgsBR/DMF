@@ -128,6 +128,25 @@ public class MainBluetoothActivity extends ActionBarActivity {
         }
     };
 
+    public static Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+
+            Bundle bundle = msg.getData();
+            byte[] data = bundle.getByteArray("data");
+            String dataString= new String(data);
+
+            if(dataString.equals("---N"))
+                statusMessage.setText("Ocorreu um erro durante a conexão.");
+            else if(dataString.equals("---S"))
+                statusMessage.setText("Conectado!");
+            else if(dataString.equals("|A")) {
+                //coloquei esse (dataString.edquals("|A")
+                textSpace.setText(new String(data));
+            }
+        }
+    };
+
 
 
 }
