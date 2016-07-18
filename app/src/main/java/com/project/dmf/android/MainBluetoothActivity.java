@@ -12,10 +12,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.dmf.config.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class MainBluetoothActivity extends ActionBarActivity {
 
@@ -121,21 +125,41 @@ public class MainBluetoothActivity extends ActionBarActivity {
         startActivityForResult(searchPairedDevicesIntent, SELECT_DISCOVERED_DEVICE);
     }
 
-    public static Handler handler = new Handler() {
+    //public static Handler handler = new Handler() {
+    public Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
 
             Bundle bundle = msg.getData();
-            byte[] data = bundle.getByteArray("data");
-            String dataString = new String(data);
+            byte[] dados = bundle.getByteArray("data");
+            String dataString = new String(dados);
 
             if(dataString.equals("---N"))
                 statusMessage.setText("Ocorreu um erro durante a conexão.");
             else if(dataString.equals("---S"))
                 statusMessage.setText("Conectado!");
             else if(!dataString.equals("|A")) {
-                //coloquei esse (dataString.edquals("|A")
-                textSpace.setText(new String(data));
+                //coloquei esse (!dataString.edquals("|A")
+                textSpace.setText(new String(dados));
+
+                //Pega a data
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy-HH:mm:ss");
+                Date data = new Date();
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(data);
+                Date dataAtual = cal.getTime();
+
+                //faz a separação da string de dados
+                String[] split = dataString.split("|");
+                String Token = split[0];
+                String CodigoCenario = split[1];
+                String SerieEquipamento = split[2];
+                String Sensor = split[3];
+                String Temperatura = split[4];
+                String DataCompleta = dateFormat.format(dataAtual);
+
+                msg(CodigoCenario);
+                msg(DataCompleta);
             }
         }
     };
@@ -160,5 +184,10 @@ public class MainBluetoothActivity extends ActionBarActivity {
         }
         return conectado;
     };
+
+    //metodo de chamar um toast
+    private void msg(String s){
+        Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+    }
 
 }
