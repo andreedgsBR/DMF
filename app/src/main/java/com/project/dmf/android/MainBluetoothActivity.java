@@ -135,9 +135,17 @@ public class MainBluetoothActivity extends ActionBarActivity {
         if (conectivtyManager.getActiveNetworkInfo() != null
                 && conectivtyManager.getActiveNetworkInfo().isAvailable()
                 && conectivtyManager.getActiveNetworkInfo().isConnected()) {
+            //conectado
             conectado = true;
+
+            //verificar se possui algo no banco
+
         } else {
+            //sem conexao
             conectado = false;
+
+            //include no banco
+
         }
         return conectado;
     };
