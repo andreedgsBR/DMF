@@ -13,8 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-//import com.project.dmf.bluetooth.R;
-
 import com.project.dmf.config.R;
 
 import java.util.ArrayList;
