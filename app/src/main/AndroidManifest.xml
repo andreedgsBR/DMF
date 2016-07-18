@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.project.dragaosemchama.dmf" >
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
+    <application
+
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+
+        <activity
+            android:name="com.project.dragaosemchama.dmf.MainBluetoothActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.project.dragaosemchama.dmf.PairedDevices"
+            android:label="Paired Devices"
+            android:parentActivityName="com.project.dragaosemchama.dmf.MainBluetoothActivity" >
+        </activity>
+
+        <activity
+            android:name="com.project.dragaosemchama.dmf.DiscoveredDevices"
+            android:label="Discovered Devices"
+            android:parentActivityName="com.project.dragaosemchama.dmf.MainBluetoothActivity" >
+        </activity>
+
+    </application>
+
+</manifest>
