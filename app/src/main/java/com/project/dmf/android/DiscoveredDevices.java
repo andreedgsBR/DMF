@@ -1,4 +1,4 @@
-package com.project.dmf.bluetooth;
+package com.project.dmf.android;
 
 import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
@@ -16,7 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.project.dragaosemchama.dmf.R;
+import com.project.dmf.config.R;
 
 public class DiscoveredDevices extends ListActivity {
 

@@ -1,4 +1,4 @@
-package com.project.dmf.bluetooth;
+package com.project.dmf.config;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

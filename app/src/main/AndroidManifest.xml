@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.project.dragaosemchama.dmf" >
+    package="com.project.dmf.config" >
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme" >
 
         <activity
-            android:name="com.project.dragaosemchama.dmf.MainBluetoothActivity"
+            android:name="com.project.dmf.android.MainBluetoothActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,15 +24,15 @@
         </activity>
 
         <activity
-            android:name="com.project.dragaosemchama.dmf.PairedDevices"
+            android:name="com.project.dmf.android.PairedDevices"
             android:label="Paired Devices"
-            android:parentActivityName="com.project.dragaosemchama.dmf.MainBluetoothActivity" >
+            android:parentActivityName="com.project.dmf.android.MainBluetoothActivity" >
         </activity>
 
         <activity
-            android:name="com.project.dragaosemchama.dmf.DiscoveredDevices"
+            android:name="com.project.dmf.android.DiscoveredDevices"
             android:label="Discovered Devices"
-            android:parentActivityName="com.project.dragaosemchama.dmf.MainBluetoothActivity" >
+            android:parentActivityName="com.project.dmf.android.MainBluetoothActivity" >
         </activity>
 
     </application>

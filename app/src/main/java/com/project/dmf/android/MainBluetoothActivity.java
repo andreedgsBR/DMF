@@ -1,20 +1,21 @@
-package com.project.dmf.bluetooth;
+package com.project.dmf.android;
 
 import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.project.dmf.bluetooth.ConnectionThread;
-import com.project.dmf.bluetooth.DiscoveredDevices;
-import com.project.dmf.bluetooth.PairedDevices;
-import com.project.dragaosemchama.dmf.R;
+//import com.project.dmf.bluetooth.R;
+
+import com.project.dmf.config.R;
 
 public class MainBluetoothActivity extends ActionBarActivity {
 
@@ -115,26 +116,7 @@ public class MainBluetoothActivity extends ActionBarActivity {
 
             Bundle bundle = msg.getData();
             byte[] data = bundle.getByteArray("data");
-            String dataString= new String(data);
-
-            if(dataString.equals("---N"))
-                statusMessage.setText("Ocorreu um erro durante a conexão.");
-            else if(dataString.equals("---S"))
-                statusMessage.setText("Conectado!");
-            else if(dataString.equals("|A")) {
-                //coloquei esse (dataString.edquals("|A")
-                textSpace.setText(new String(data));
-            }
-        }
-    };
-
-    public static Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-
-            Bundle bundle = msg.getData();
-            byte[] data = bundle.getByteArray("data");
-            String dataString= new String(data);
+            String dataString = new String(data);
 
             if(dataString.equals("---N"))
                 statusMessage.setText("Ocorreu um erro durante a conexão.");
@@ -159,7 +141,5 @@ public class MainBluetoothActivity extends ActionBarActivity {
         }
         return conectado;
     };
-
-
 
 }
