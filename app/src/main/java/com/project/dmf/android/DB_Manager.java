@@ -20,7 +20,7 @@ public class DB_Manager {
     }
 
     public void addItens(String dados){
-        String sql = "INSERT INTO fila (dados) VALUES ("+dados+")";
+        String sql = "INSERT INTO fila (dados) VALUES ('"+dados+"')";
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         db.execSQL(sql);
     }
@@ -35,7 +35,7 @@ public class DB_Manager {
             dados = new ArrayList<String>();
 
             do {
-                dados.add(cursor.getString(1));
+                dados.add(cursor.getString(0));
             } while(cursor.moveToNext());
         }
 

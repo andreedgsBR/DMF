@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import com.project.dmf.config.R;
 
+import java.util.ArrayList;
+
 public class MainBluetoothActivity extends ActionBarActivity {
 
     public static int ENABLE_BLUETOOTH = 1;
@@ -30,8 +32,19 @@ public class MainBluetoothActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_bluetooth);
+        setContentView(R.layout.activity_main);
 
+        //Array pra pegar oq ta guardado no banco
+        ArrayList<String> dados = null;
+        DB_Manager dbManager = new DB_Manager(this);
+
+        for (int i=0; i<10; i++) {
+            dbManager.addItens("Item " + 1);
+        }
+
+        dados = dbManager.getAllItens();
+
+        //cria os widgets
         statusMessage = (TextView) findViewById(R.id.statusMessage);
         textSpace = (TextView) findViewById(R.id.textSpace);
 
