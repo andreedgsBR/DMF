@@ -156,16 +156,35 @@ public class MainBluetoothActivity extends ActionBarActivity {
             byte[] dados = bundle.getByteArray("data");
             String dataString = new String(dados);
 
+            //data
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+            Date data = new Date();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(data);
+            Date dataAtual = cal.getTime();
+            String DataCompleta = dateFormat.format(dataAtual);
+
             if(dataString.equals("---N"))
                 statusMessage.setText("Ocorreu um erro durante a conexão.");
             else if(dataString.equals("---S"))
                 statusMessage.setText("Conectado!");
-            else if(!dataString.equals("|A")) {
+            else {
                 //coloquei esse (!dataString.edquals("|A")
                 //textSpace.setText(new String(dados));
-
                 String[] sp = dataString.split("|");
-                textSpace.setText(sp[1]);
+
+                if (sp[0].equals("A")){
+                    textSpace.setText("Aguardando...");
+                } else{
+                    //textSpace.setText("CHEGOU O TOKEN" + sp[0]);
+                    textSpace.setText(sp[1] + "\n"
+                            + sp[2] + "\n"
+                            + sp[3] + "\n"
+                            + sp[4] + "\n"
+                            + DataCompleta + "\n"
+                            + sp[5]);
+                }
+
             }
         }
     };
