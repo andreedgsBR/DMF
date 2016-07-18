@@ -143,19 +143,19 @@ public class MainBluetoothActivity extends ActionBarActivity {
                 textSpace.setText(new String(dados));
 
                 //Pega a data
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy-HH:mm:ss");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
                 Date data = new Date();
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(data);
                 Date dataAtual = cal.getTime();
 
                 //faz a separação da string de dados
-                String[] split = dataString.split("|");
-                String Token = split[0];
-                String CodigoCenario = split[1];
-                String SerieEquipamento = split[2];
-                String Sensor = split[3];
-                String Temperatura = split[4];
+                String[] sp = dataString.split("|");
+                String Token = sp[0];
+                String CodigoCenario = sp[1];
+                String SerieEquipamento = sp[2];
+                String Sensor = sp[3];
+                String Temperatura = sp[4];
                 String DataCompleta = dateFormat.format(dataAtual);
 
                 statusMessage.setText(CodigoCenario + "\n" + DataCompleta);
