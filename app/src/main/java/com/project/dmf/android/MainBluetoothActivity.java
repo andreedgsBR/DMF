@@ -133,36 +133,33 @@ public class MainBluetoothActivity extends ActionBarActivity {
 
             Bundle bundle = msg.getData();
             byte[] data = bundle.getByteArray("data");
-            //String dataString= new String(data);
+            String dataString= new String(data);
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
             Date dia = new Date();
             Calendar cal = Calendar.getInstance();
             cal.setTime(dia);
             Date dataAtual = cal.getTime();
-            String DataCompleta = dateFormat.format(dataAtual);
+            String DataCompleta = ("&DataHora="+ dateFormat.format(dataAtual));
 
-            try {
-                String dataString = new String(data, "UTF-8"); // for UTF-8 encoding
-                if(dataString.equals("---N"))
-                    statusMessage.setText("Ocorreu um erro durante a conexão!");
-                else if(dataString.equals("---S"))
-                    statusMessage.setText("Conectado.");
-                else {
-                    //textSpace.setText(new String(data));
+            String[] sp = dataString.split("\\|");
+            String concatenaString = sp[1] + sp[2] + sp[3]+ sp[4] + DataCompleta + sp[5];
+            //String dataString = new String(data, "UTF-8");
+             // for UTF-8 encoding
+            if(dataString.equals("---N"))
+                statusMessage.setText("Ocorreu um erro durante a conexão!");
+            else if(dataString.equals("---S"))
+                statusMessage.setText("Conectado.");
+            else {
+                //textSpace.setText(new String(data));
 
-                    String[] sp = dataString.split("\\|");
-                    textSpace.setText(sp[1] + "\n"
-                            + sp[2] + "\n"
-                            + sp[3] + "\n"
-                            + sp[4] + "\n"
-                            + DataCompleta + "\n"
-                            + sp[5]);
-
-                    textSpace.setText(dataString);
-                }
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                /*textSpace.setText(sp[1] + "\n"
+                        + sp[2] + "\n"
+                        + sp[3] + "\n"
+                        + sp[4] + "\n"
+                        + DataCompleta + "\n"
+                        + sp[5]);*/
+                textSpace.setText(concatenaString);
             }
         }
     };
