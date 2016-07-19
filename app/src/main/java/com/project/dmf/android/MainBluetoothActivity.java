@@ -157,6 +157,8 @@ public class MainBluetoothActivity extends ActionBarActivity {
                     textSpace.setText(concatenaString);
 
                     //textSpace.setText(dataString);
+
+                    //ULTIMO Q FUNCIONO CARAI
                 }
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
