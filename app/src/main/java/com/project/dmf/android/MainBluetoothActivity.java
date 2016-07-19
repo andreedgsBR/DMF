@@ -138,7 +138,7 @@ public class MainBluetoothActivity extends ActionBarActivity {
             //String dataString = new String(data, "UTF-8");
              // for UTF-8 encoding
 
-            while (data.length>0){
+            //while (data.length>0){
                 //data
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
                 Date dia = new Date();
@@ -151,16 +151,19 @@ public class MainBluetoothActivity extends ActionBarActivity {
                 String[] sp = dataString.split("\\|");
                 String concatenaString = sp[1] + sp[2] + sp[3]+ sp[4] + DataCompleta + sp[5];
 
-                if(dataString.equals("---N"))
+                if(dataString.equals("---N")) {
                     statusMessage.setText("Ocorreu um erro durante a conexão!");
-                else if(dataString.equals("---S"))
+                }else if(dataString.equals("---S")){
                     statusMessage.setText("Conectado.");
-                else if (sp[1] != "A"){
+                    String i = "1";
+                    textSpace.setText(i);
+                    i += 1;
+                }else if (sp[1] != "A"){
                     textSpace.setText(concatenaString);
                 } else {
                     textSpace.setText("Aguardando...");
                 }
-            }
+            //}
                 //textSpace.setText(new String(data));
 
                 /*textSpace.setText(sp[1] + "\n"
