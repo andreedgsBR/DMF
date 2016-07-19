@@ -29,12 +29,19 @@ public class MainBluetoothActivity extends ActionBarActivity {
 
     static TextView statusMessage;
     static TextView textSpace;
+    private static String dataString;
+    private static String $Token;
+    private static String CodigoCenario;
+    private static String SerieEquipamento;
+    private static String Sensor;
+    private static String Temperatura;
+    private static String DataCompleta;
     ConnectionThread connect;
 
-    public static void spliText(Message msg) {
+    public static void conectaCentral(Message msg) {
         Bundle bundle = msg.getData();
         byte[] dados = bundle.getByteArray("data");
-        String dataString = new String(dados);
+        dataString = new String(dados);
 
         //Pega a data
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -44,13 +51,13 @@ public class MainBluetoothActivity extends ActionBarActivity {
         Date dataAtual = cal.getTime();
 
         //faz a separação da string de dados
-        String[] sp = dataString.split("|");
-        String Token = sp[0];
-        String CodigoCenario = sp[1];
-        String SerieEquipamento = sp[2];
-        String Sensor = sp[3];
-        String DataCompleta = dateFormat.format(dataAtual);
-        String Temperatura = sp[4];
+        String[] sp = dataString.split("\\|");
+        $Token = sp[1];
+        CodigoCenario = sp[2];
+        SerieEquipamento = sp[3];
+        Sensor = sp[4];
+        DataCompleta = dateFormat.format(dataAtual);
+        Temperatura = sp[5];
 
     }
 
@@ -153,21 +160,6 @@ public class MainBluetoothActivity extends ActionBarActivity {
         @Override
         public void handleMessage(Message msg) {
 
-            String dataString = null;
-
-            Bundle bundle = msg.getData();
-            byte[] dados = bundle.getByteArray("data");
-            dataString = new String(dados);
-
-            //data
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-            Date data = new Date();
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(data);
-            Date dataAtual = cal.getTime();
-            String DataCompleta = dateFormat.format(dataAtual);
-
-
             if(dataString.equals("---N"))
                 statusMessage.setText("Ocorreu um erro durante a conexão.");
             else if(dataString.equals("---S"))
@@ -175,14 +167,18 @@ public class MainBluetoothActivity extends ActionBarActivity {
             else {
                 //coloquei esse (!dataString.edquals("|A")
                 //textSpace.setText(new String(dados));
+                //textSpace.setText(dataString);
 
-                String[] sp = dataString.split("\\|");
+                if ($Token != "A"){
+                    textSpace.setText($Token + " 1\n"
+                            + CodigoCenario + " 2\n"
+                            + SerieEquipamento + " 3\n"
+                            + Sensor + " 4\n"
+                            + DataCompleta + "\n"
+                            + Temperatura + " 5\n");
 
-
-                if (sp[1].equals("A")){
-                    textSpace.setText("Aguardando...");
                 } else{
-                    textSpace.setText(dataString);
+                    textSpace.setText("Aguardando...");
                    // String[] sp = dataString.split("\\|");
 
                     /*if(!dataString.equals("A")){
@@ -192,8 +188,6 @@ public class MainBluetoothActivity extends ActionBarActivity {
                                 + sp[4] + " 4\n"
                                 + DataCompleta + "\n"
                                 + sp[5] + " 5\n");*/
-
-                    textSpace.setText("Passou");
                 }
 
             }
