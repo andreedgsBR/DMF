@@ -38,7 +38,11 @@ public class MainBluetoothActivity extends ActionBarActivity {
     private static String DataCompleta;
     ConnectionThread connect;
 
-    public static void conectaCentral(Message msg) {
+    public static String conectaCentral(String dataString) {
+        return conectaCentral(MainBluetoothActivity.dataString);
+    }
+
+    public static String conectaCentral(Message msg) {
         Bundle bundle = msg.getData();
         byte[] dados = bundle.getByteArray("data");
         dataString = new String(dados);
@@ -59,6 +63,25 @@ public class MainBluetoothActivity extends ActionBarActivity {
         DataCompleta = dateFormat.format(dataAtual);
         Temperatura = sp[5];
 
+        if(dataString.equals("---N"))
+            statusMessage.setText("Ocorreu um erro durante a conexão.");
+        else if(dataString.equals("---S"))
+            statusMessage.setText("Conectado!");
+        else {
+            if ($Token != "A"){
+                textSpace.setText($Token + " 1\n"
+                        + CodigoCenario + " 2\n"
+                        + SerieEquipamento + " 3\n"
+                        + Sensor + " 4\n"
+                        + DataCompleta + "\n"
+                        + Temperatura + " 5\n");
+
+            } else {
+                textSpace.setText("Aguardando...");
+            }
+        }
+
+        return dataString;
     }
 
     @Override
@@ -164,12 +187,22 @@ public class MainBluetoothActivity extends ActionBarActivity {
                 statusMessage.setText("Ocorreu um erro durante a conexão.");
             else if(dataString.equals("---S"))
                 statusMessage.setText("Conectado!");
-            else {
+
+            String recebeString = conectaCentral(dataString);
+
+            statusMessage.setText(recebeString);
+
+
+            //if(dataString.equals("---N"))
+            //    statusMessage.setText("Ocorreu um erro durante a conexão.");
+            //else if(dataString.equals("---S"))
+            //    statusMessage.setText("Conectado!");
+            //else {
                 //coloquei esse (!dataString.edquals("|A")
                 //textSpace.setText(new String(dados));
                 //textSpace.setText(dataString);
 
-                if ($Token != "A"){
+              //  if ($Token != "A"){
                     /*textSpace.setText($Token + " 1\n"
                             + CodigoCenario + " 2\n"
                             + SerieEquipamento + " 3\n"
@@ -177,10 +210,10 @@ public class MainBluetoothActivity extends ActionBarActivity {
                             + DataCompleta + "\n"
                             + Temperatura + " 5\n");*/
 
-                    textSpace.setText(dataString);
+                //    textSpace.setText(dataString);
 
-                } else{
-                    textSpace.setText("Aguardando...");
+                //} else{
+                  //  textSpace.setText("Aguardando...");
                    // String[] sp = dataString.split("\\|");
 
                     /*if(!dataString.equals("A")){
@@ -190,9 +223,9 @@ public class MainBluetoothActivity extends ActionBarActivity {
                                 + sp[4] + " 4\n"
                                 + DataCompleta + "\n"
                                 + sp[5] + " 5\n");*/
-                }
+                //}
 
-            }
+           // }
         }
     };
 
