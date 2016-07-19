@@ -29,7 +29,7 @@ public class MainBluetoothActivity extends ActionBarActivity {
 
     static TextView statusMessage;
     static TextView textSpace;
-    private static String dataString;
+    private static String dataString = "null";
     private static String $Token;
     private static String CodigoCenario;
     private static String SerieEquipamento;
@@ -170,12 +170,14 @@ public class MainBluetoothActivity extends ActionBarActivity {
                 //textSpace.setText(dataString);
 
                 if ($Token != "A"){
-                    textSpace.setText($Token + " 1\n"
+                    /*textSpace.setText($Token + " 1\n"
                             + CodigoCenario + " 2\n"
                             + SerieEquipamento + " 3\n"
                             + Sensor + " 4\n"
                             + DataCompleta + "\n"
-                            + Temperatura + " 5\n");
+                            + Temperatura + " 5\n");*/
+
+                    textSpace.setText(dataString);
 
                 } else{
                     textSpace.setText("Aguardando...");

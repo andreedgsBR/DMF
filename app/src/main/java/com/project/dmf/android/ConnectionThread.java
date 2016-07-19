@@ -172,7 +172,9 @@ public class ConnectionThread extends Thread{
         Bundle bundle = new Bundle();
         bundle.putByteArray("data", data);
         message.setData(bundle);
-        MainBluetoothActivity.handler.sendMessage(message);
+        //MainBluetoothActivity.handler.sendMessage(message);
+
+        MainBluetoothActivity.conectaCentral(message);
     }
 
     /*  Método utilizado pela Activity principal para transmitir uma mensagem ao
