@@ -135,19 +135,22 @@ public class MainBluetoothActivity extends ActionBarActivity {
             byte[] data = bundle.getByteArray("data");
             String dataString= new String(data);
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-            Date dia = new Date();
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(dia);
-            Date dataAtual = cal.getTime();
-            String DataCompleta = ("&DataHora="+ dateFormat.format(dataAtual));
-
-            String[] sp = dataString.split("\\|");
-            String concatenaString = sp[1] + sp[2] + sp[3]+ sp[4] + DataCompleta + sp[5];
             //String dataString = new String(data, "UTF-8");
              // for UTF-8 encoding
 
             while (data.length>0){
+                //data
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+                Date dia = new Date();
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(dia);
+                Date dataAtual = cal.getTime();
+                String DataCompleta = ("&DataHora="+ dateFormat.format(dataAtual));
+
+                //split
+                String[] sp = dataString.split("\\|");
+                String concatenaString = sp[1] + sp[2] + sp[3]+ sp[4] + DataCompleta + sp[5];
+
                 if(dataString.equals("---N"))
                     statusMessage.setText("Ocorreu um erro durante a conexão!");
                 else if(dataString.equals("---S"))
@@ -156,13 +159,6 @@ public class MainBluetoothActivity extends ActionBarActivity {
                     textSpace.setText(concatenaString);
                 } else {
                     textSpace.setText("Aguardando...");
-
-                    try {
-                        wait(2000);
-                        textSpace.setText(null);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                 }
             }
                 //textSpace.setText(new String(data));
