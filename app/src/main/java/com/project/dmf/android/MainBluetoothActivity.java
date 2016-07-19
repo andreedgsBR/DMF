@@ -135,35 +135,29 @@ public class MainBluetoothActivity extends ActionBarActivity {
             byte[] data = bundle.getByteArray("data");
             String dataString= new String(data);
 
+            //data
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+            Date dia = new Date();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(dia);
+            Date dataAtual = cal.getTime();
+            String DataCompleta = ("&DataHora="+ dateFormat.format(dataAtual));
+
+            //split
+            String[] sp = dataString.split("\\|");
+            String concatenaString = sp[1] + sp[2] + sp[3]+ sp[4] + DataCompleta + sp[5];
+
             //String dataString = new String(data, "UTF-8");
              // for UTF-8 encoding
 
-            //while (data.length>0){
-                //data
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-                Date dia = new Date();
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(dia);
-                Date dataAtual = cal.getTime();
-                String DataCompleta = ("&DataHora="+ dateFormat.format(dataAtual));
+            if(dataString.equals("---N")) {
+                statusMessage.setText("Ocorreu um erro durante a conexão!");
+            }else if(dataString.equals("---S")){
+                statusMessage.setText("Conectado.");
+            }else {
+                textSpace.setText(concatenaString);
+            }
 
-                //split
-                String[] sp = dataString.split("\\|");
-                String concatenaString = sp[1] + sp[2] + sp[3]+ sp[4] + DataCompleta + sp[5];
-
-                if(dataString.equals("---N")) {
-                    statusMessage.setText("Ocorreu um erro durante a conexão!");
-                }else if(dataString.equals("---S")){
-                    statusMessage.setText("Conectado.");
-                    String i = "1";
-                    textSpace.setText(i);
-                    i += 1;
-                }else if (sp[1] != "A"){
-                    textSpace.setText(concatenaString);
-                } else {
-                    textSpace.setText("Aguardando...");
-                }
-            //}
                 //textSpace.setText(new String(data));
 
                 /*textSpace.setText(sp[1] + "\n"
