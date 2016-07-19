@@ -146,20 +146,23 @@ public class MainBluetoothActivity extends ActionBarActivity {
             String concatenaString = sp[1] + sp[2] + sp[3]+ sp[4] + DataCompleta + sp[5];
             //String dataString = new String(data, "UTF-8");
              // for UTF-8 encoding
-            if(dataString.equals("---N"))
-                statusMessage.setText("Ocorreu um erro durante a conexão!");
-            else if(dataString.equals("---S"))
-                statusMessage.setText("Conectado.");
-            else if (sp[1] != "A"){
-                textSpace.setText(concatenaString);
-            } else {
-                textSpace.setText("Aguardando...");
 
-                try {
-                    wait(2000);
-                    textSpace.setText(null);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            while (data.length>0){
+                if(dataString.equals("---N"))
+                    statusMessage.setText("Ocorreu um erro durante a conexão!");
+                else if(dataString.equals("---S"))
+                    statusMessage.setText("Conectado.");
+                else if (sp[1] != "A"){
+                    textSpace.setText(concatenaString);
+                } else {
+                    textSpace.setText("Aguardando...");
+
+                    try {
+                        wait(2000);
+                        textSpace.setText(null);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
                 //textSpace.setText(new String(data));
@@ -170,7 +173,7 @@ public class MainBluetoothActivity extends ActionBarActivity {
                         + sp[4] + "\n"
                         + DataCompleta + "\n"
                         + sp[5]);*/
-            textSpace.setText(concatenaString);
+            //textSpace.setText(concatenaString);
 
         }
     };
