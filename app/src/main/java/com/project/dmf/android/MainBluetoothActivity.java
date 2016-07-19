@@ -152,12 +152,20 @@ public class MainBluetoothActivity extends ActionBarActivity {
                     //textSpace.setText(new String(data));
 
                     String[] sp = dataString.split("\\|");
-                    String concatenaString = sp[1] + sp[2] + sp[3]+ sp[4] + DataCompleta + sp[5];
 
-                    textSpace.setText(concatenaString);
+                    if (sp[1].equals("") || (!sp[1].equals("Token=") )){
 
-                    //textSpace.setText(dataString);
+                        sp[1] = "teste";
+                    }
 
+                    if (sp[1].equals("Token=") && (sp[2].equals("&CodigoCenario=40")) ){
+
+                        String concatenaString = sp[1] + sp[2] + sp[3]+ sp[4] + DataCompleta + sp[5];
+
+                        textSpace.setText(concatenaString);
+                    } else {
+                        textSpace.setText("Aguardando Dados.");
+                    }
                     //ULTIMO Q FUNCIONO CARAI
                 }
             } catch (UnsupportedEncodingException e) {
