@@ -151,10 +151,7 @@ public class MainBluetoothActivity extends ActionBarActivity {
                 else {
                     //textSpace.setText(new String(data));
 
-                    String[] sp = dataString .split("|");
-                    textSpace.setText(sp[1]);
-
-
+                    String[] sp = dataString.split("\\|");
                     textSpace.setText(sp[1] + "\n"
                             + sp[2] + "\n"
                             + sp[3] + "\n"

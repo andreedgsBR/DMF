@@ -13,38 +13,31 @@
         android:id="@+id/statusMessage"
         android:text=""
         android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_height="wrap_content"/>
 
     <Button
-        android:layout_width="50dp"
+        android:layout_width="150dp"
         android:layout_height="50dp"
-        android:text="Dispositivos\n pareados"
+        android:text="@string/btnConectar"
         android:id="@+id/button_PairedDevices"
         android:layout_below="@+id/statusMessage"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="20dp"
-        android:onClick="searchPairedDevices"
-        android:layout_toLeftOf="@+id/textSpace"
-        android:layout_toStartOf="@+id/textSpace" />
+        android:onClick="searchPairedDevices" />
 
     <Button
-        android:layout_width="50dp"
+        android:layout_width="150dp"
         android:layout_height="50dp"
-        android:text="Pesquisar\nDispositivos"
+        android:text="@string/btnProcurar"
         android:id="@+id/button_DiscoveredDevices"
         android:onClick="discoverDevices"
         android:layout_alignTop="@+id/button_PairedDevices"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_toRightOf="@+id/textSpace"
-        android:layout_toEndOf="@+id/textSpace" />
+        android:layout_alignParentEnd="true"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text=""
         android:id="@+id/textSpace"

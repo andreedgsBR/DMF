@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">DMF - Temperatura</string>
+    <string name="btnConectar">Dispositivos\nPareados</string>
+    <string name="btnProcurar">Pesquisar\nDispositivos</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_paired_devices">paired_devices</string>
 
