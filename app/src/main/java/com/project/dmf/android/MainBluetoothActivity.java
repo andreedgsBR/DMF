@@ -152,14 +152,11 @@ public class MainBluetoothActivity extends ActionBarActivity {
                     //textSpace.setText(new String(data));
 
                     String[] sp = dataString.split("\\|");
-                    textSpace.setText(sp[1] + "\n"
-                            + sp[2] + "\n"
-                            + sp[3] + "\n"
-                            + sp[4] + "\n"
-                            + DataCompleta + "\n"
-                            + sp[5]);
+                    String concatenaString = sp[1] + sp[2] + sp[3]+ sp[4] + DataCompleta + sp[5];
 
-                    textSpace.setText(dataString);
+                    textSpace.setText(concatenaString);
+
+                    //textSpace.setText(dataString);
                 }
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
