@@ -12,15 +12,15 @@
     <TextView
         android:id="@+id/statusMessage"
         android:text=""
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:text="Dispositivos\n pareados"
         android:id="@+id/button_PairedDevices"
         android:layout_below="@+id/statusMessage"
@@ -32,8 +32,8 @@
         android:layout_toStartOf="@+id/textSpace" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:text="Pesquisar\nDispositivos"
         android:id="@+id/button_DiscoveredDevices"
         android:onClick="discoverDevices"

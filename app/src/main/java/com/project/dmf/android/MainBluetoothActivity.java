@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import com.project.dmf.config.R;
 
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -125,20 +127,45 @@ public class MainBluetoothActivity extends ActionBarActivity {
         startActivityForResult(searchPairedDevicesIntent, SELECT_DISCOVERED_DEVICE);
     }
 
-    public static Handler handler = new Handler() {
+    public static Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
 
             Bundle bundle = msg.getData();
             byte[] data = bundle.getByteArray("data");
-            String dataString= new String(data);
+            //String dataString= new String(data);
 
-            if(dataString.equals("---N"))
-                statusMessage.setText("Ocorreu um erro durante a conexão!");
-            else if(dataString.equals("---S"))
-                statusMessage.setText("Conectado.");
-            else {
-                textSpace.setText(new String(data));
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+            Date dia = new Date();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(dia);
+            Date dataAtual = cal.getTime();
+            String DataCompleta = dateFormat.format(dataAtual);
+
+            try {
+                String dataString = new String(data, "UTF-8"); // for UTF-8 encoding
+                if(dataString.equals("---N"))
+                    statusMessage.setText("Ocorreu um erro durante a conexão!");
+                else if(dataString.equals("---S"))
+                    statusMessage.setText("Conectado.");
+                else {
+                    //textSpace.setText(new String(data));
+
+                    String[] sp = dataString .split("|");
+                    textSpace.setText(sp[1]);
+
+
+                    textSpace.setText(sp[1] + "\n"
+                            + sp[2] + "\n"
+                            + sp[3] + "\n"
+                            + sp[4] + "\n"
+                            + DataCompleta + "\n"
+                            + sp[5]);
+
+                    textSpace.setText(dataString);
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
             }
         }
     };
