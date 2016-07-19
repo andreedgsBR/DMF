@@ -151,6 +151,7 @@ public class MainBluetoothActivity extends ActionBarActivity {
                 else {
                     //textSpace.setText(new String(data));
 
+                    dataString.trim();
                     String[] sp = dataString.split("\\|");
 
                     if (sp[1].equals("") || (!sp[1].equals("Token=") )){
