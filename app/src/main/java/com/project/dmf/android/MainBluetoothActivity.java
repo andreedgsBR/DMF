@@ -176,8 +176,10 @@ public class MainBluetoothActivity extends ActionBarActivity {
                 //coloquei esse (!dataString.edquals("|A")
                 //textSpace.setText(new String(dados));
 
+                String[] sp = dataString.split("\\|");
 
-                if (dados.equals("A")){
+
+                if (sp[1].equals("A")){
                     textSpace.setText("Aguardando...");
                 } else{
                     textSpace.setText(dataString);
