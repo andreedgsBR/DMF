@@ -176,19 +176,23 @@ public class MainBluetoothActivity extends ActionBarActivity {
                 //coloquei esse (!dataString.edquals("|A")
                 //textSpace.setText(new String(dados));
 
-                /*
-                if (sp[0].equals("A")){
+
+                if (dados.equals("A")){
                     textSpace.setText("Aguardando...");
-                } else{*/
-                    //textSpace.setText("CHEGOU O TOKEN" + sp[0]);
-                    String[] sp = dataString.split("\\|");
-                    textSpace.setText(sp[1] + " 1\n"
-                            + sp[2] + " 2\n"
-                            + sp[3] + " 3\n"
-                            + sp[4] + " 4\n"
-                            + DataCompleta + "\n"
-                            + sp[5] + " 5\n");
-                //}
+                } else{
+                    textSpace.setText(dataString);
+                   // String[] sp = dataString.split("\\|");
+
+                    /*if(!dataString.equals("A")){
+                        textSpace.setText(sp[1] + " 1\n"
+                                + sp[2] + " 2\n"
+                                + sp[3] + " 3\n"
+                                + sp[4] + " 4\n"
+                                + DataCompleta + "\n"
+                                + sp[5] + " 5\n");*/
+
+                    textSpace.setText("Passou");
+                }
 
             }
         }
@@ -215,9 +219,9 @@ public class MainBluetoothActivity extends ActionBarActivity {
         return conectado;
     };
 
-    //metodo de chamar um toast
+    /*//metodo de chamar um toast
     private void msg(String s){
         Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
-    }
+    }*/
 
 }
