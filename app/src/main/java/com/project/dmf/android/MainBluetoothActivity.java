@@ -150,7 +150,18 @@ public class MainBluetoothActivity extends ActionBarActivity {
                 statusMessage.setText("Ocorreu um erro durante a conexão!");
             else if(dataString.equals("---S"))
                 statusMessage.setText("Conectado.");
-            else {
+            else if (sp[1] != "A"){
+                textSpace.setText(concatenaString);
+            } else {
+                textSpace.setText("Aguardando...");
+
+                try {
+                    wait(2000);
+                    textSpace.setText(null);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
                 //textSpace.setText(new String(data));
 
                 /*textSpace.setText(sp[1] + "\n"
@@ -159,8 +170,8 @@ public class MainBluetoothActivity extends ActionBarActivity {
                         + sp[4] + "\n"
                         + DataCompleta + "\n"
                         + sp[5]);*/
-                textSpace.setText(concatenaString);
-            }
+            textSpace.setText(concatenaString);
+
         }
     };
 
