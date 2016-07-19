@@ -49,8 +49,9 @@ public class MainBluetoothActivity extends ActionBarActivity {
         String CodigoCenario = sp[1];
         String SerieEquipamento = sp[2];
         String Sensor = sp[3];
-        String Temperatura = sp[4];
         String DataCompleta = dateFormat.format(dataAtual);
+        String Temperatura = sp[4];
+
     }
 
     @Override
@@ -152,9 +153,11 @@ public class MainBluetoothActivity extends ActionBarActivity {
         @Override
         public void handleMessage(Message msg) {
 
+            String dataString = null;
+
             Bundle bundle = msg.getData();
             byte[] dados = bundle.getByteArray("data");
-            String dataString = new String(dados);
+            dataString = new String(dados);
 
             //data
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -164,6 +167,7 @@ public class MainBluetoothActivity extends ActionBarActivity {
             Date dataAtual = cal.getTime();
             String DataCompleta = dateFormat.format(dataAtual);
 
+
             if(dataString.equals("---N"))
                 statusMessage.setText("Ocorreu um erro durante a conexão.");
             else if(dataString.equals("---S"))
@@ -171,19 +175,20 @@ public class MainBluetoothActivity extends ActionBarActivity {
             else {
                 //coloquei esse (!dataString.edquals("|A")
                 //textSpace.setText(new String(dados));
-                String[] sp = dataString.split("|");
 
+                /*
                 if (sp[0].equals("A")){
                     textSpace.setText("Aguardando...");
-                } else{
+                } else{*/
                     //textSpace.setText("CHEGOU O TOKEN" + sp[0]);
-                    textSpace.setText(sp[1] + "\n"
-                            + sp[2] + "\n"
-                            + sp[3] + "\n"
-                            + sp[4] + "\n"
+                    String[] sp = dataString.split("\\|");
+                    textSpace.setText(sp[1] + " 1\n"
+                            + sp[2] + " 2\n"
+                            + sp[3] + " 3\n"
+                            + sp[4] + " 4\n"
                             + DataCompleta + "\n"
-                            + sp[5]);
-                }
+                            + sp[5] + " 5\n");
+                //}
 
             }
         }
