@@ -16,7 +16,6 @@ import java.util.UUID;
 
 public class ConnectionThread extends Thread{
 
-    static TextView temperatura;
     BluetoothSocket btSocket = null;
     BluetoothServerSocket btServerSocket = null;
     InputStream input = null;
@@ -28,7 +27,7 @@ public class ConnectionThread extends Thread{
 
     /*  Este construtor prepara o dispositivo para atuar como servidor.
      */
-    public ConnectionThread() {
+    public ConnectionThread(){
         this.server = true;
     }
 
@@ -44,7 +43,7 @@ public class ConnectionThread extends Thread{
     /*  O método run() contem as instruções que serão efetivamente realizadas
     em uma nova thread.
      */
-    public void run() {
+    public void run(){
         /*  Anuncia que a thread está sendo executada.
             Pega uma referência para o adaptador Bluetooth padrão.
          */
@@ -54,24 +53,25 @@ public class ConnectionThread extends Thread{
         /*  Determina que ações executar dependendo se a thread está configurada
         para atuar como servidor ou cliente.
          */
-        if(this.server) {
-            /*  Servidor.
-             */
-            try {
+        if(this.server){
+            //Servidor.
+            try{
                 /*  Cria um socket de servidor Bluetooth.
                     O socket servidor será usado apenas para iniciar a conexão.
                     Permanece em estado de espera até que algum cliente
                 estabeleça uma conexão.
                  */
-                btServerSocket = btAdapter.listenUsingRfcommWithServiceRecord("DMF Bluetooth", UUID.fromString(myUUID));
+                btServerSocket = btAdapter.listenUsingRfcommWithServiceRecord("Super Bluetooth", UUID.fromString(myUUID));
                 btSocket = btServerSocket.accept();
+
                 /*  Se a conexão foi estabelecida corretamente, o socket
                 servidor pode ser liberado.
                  */
-                if(btSocket != null) {
+                if(btSocket != null){
                     btServerSocket.close();
                 }
-            } catch (IOException e) {
+            } catch(IOException e){
+
                 /*  Caso ocorra alguma exceção, exibe o stack trace para debug.
                     Envia um código para a Activity principal, informando que
                 a conexão falhou.
@@ -79,11 +79,10 @@ public class ConnectionThread extends Thread{
                 e.printStackTrace();
                 toMainActivity("---N".getBytes());
             }
-        } else {
-            /*  Cliente.
-             */
-            try {
-                /*  Obtem uma representação do dispositivo Bluetooth com
+        } else{
+            //Cliente
+            try{
+                 /*  Obtem uma representação do dispositivo Bluetooth com
                 endereço btDevAddress.
                     Cria um socket Bluetooth.
                  */
@@ -102,9 +101,8 @@ public class ConnectionThread extends Thread{
                  */
                 if (btSocket != null)
                     btSocket.connect();
-            } catch (IOException e) {
-
-                /*  Caso ocorra alguma exceção, exibe o stack trace para debug.
+            } catch(IOException e){
+                 /*  Caso ocorra alguma exceção, exibe o stack trace para debug.
                     Envia um código para a Activity principal, informando que
                 a conexão falhou.
                  */
@@ -116,14 +114,15 @@ public class ConnectionThread extends Thread{
         /*  Pronto, estamos conectados! Agora, só precisamos gerenciar a conexão.
             ...
          */
-        if(btSocket != null) {
 
+        if(btSocket != null) {
             /*  Envia um código para a Activity principal informando que a
             a conexão ocorreu com sucesso.
              */
             toMainActivity("---S".getBytes());
+
             try {
-                /*  Obtem referências para os fluxos de entrada e saída do
+                 /*  Obtem referências para os fluxos de entrada e saída do
                 socket Bluetooth.
                  */
                 input = btSocket.getInputStream();
@@ -149,9 +148,8 @@ public class ConnectionThread extends Thread{
                     bytes = input.read(buffer);
                     toMainActivity(Arrays.copyOfRange(buffer, 0, bytes));
                 }
-
-            } catch (IOException e) {
-                /*  Caso ocorra alguma exceção, exibe o stack trace para debug.
+            } catch(IOException e){
+                 /*  Caso ocorra alguma exceção, exibe o stack trace para debug.
                     Envia um código para a Activity principal, informando que
                 a conexão falhou.
                  */
@@ -166,36 +164,30 @@ public class ConnectionThread extends Thread{
         O byte array é encapsulado em um Bundle e posteriormente em uma Message
     antes de ser enviado.
      */
-    private void toMainActivity(byte[] data) {
-
+    private void toMainActivity(byte[] data){
         Message message = new Message();
         Bundle bundle = new Bundle();
         bundle.putByteArray("data", data);
         message.setData(bundle);
         MainBluetoothActivity.handler.sendMessage(message);
-
-        //MainBluetoothActivity.conectaCentral(message);
     }
 
     /*  Método utilizado pela Activity principal para transmitir uma mensagem ao
      outro lado da conexão.
         A mensagem deve ser representada por um byte array.
      */
-    public void write(byte[] data) {
-
+    public void write(byte[] data){
         if(output != null) {
-            try {
-
+            try{
                 /*  Transmite a mensagem.
                  */
                 output.write(data);
 
-            } catch (IOException e) {
+            }catch (IOException e){
                 e.printStackTrace();
             }
-        } else {
-
-            /*  Envia à Activity principal um código de erro durante a conexão.
+        } else{
+             /*  Envia à Activity principal um código de erro durante a conexão.
              */
             toMainActivity("---N".getBytes());
         }
@@ -203,15 +195,12 @@ public class ConnectionThread extends Thread{
 
     /*  Método utilizado pela Activity principal para encerrar a conexão
      */
-    public void cancel() {
-
-        try {
-
+    public void cancel(){
+        try{
             running = false;
             btServerSocket.close();
             btSocket.close();
-
-        } catch (IOException e) {
+        } catch (IOException e){
             e.printStackTrace();
         }
         running = false;

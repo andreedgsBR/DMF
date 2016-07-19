@@ -29,60 +29,7 @@ public class MainBluetoothActivity extends ActionBarActivity {
 
     static TextView statusMessage;
     static TextView textSpace;
-    private static String dataString = "null";
-    private static String $Token;
-    private static String CodigoCenario;
-    private static String SerieEquipamento;
-    private static String Sensor;
-    private static String Temperatura;
-    private static String DataCompleta;
     ConnectionThread connect;
-
-    public static String conectaCentral(String dataString) {
-        return conectaCentral(MainBluetoothActivity.dataString);
-    }
-
-    public static String conectaCentral(Message msg) {
-        Bundle bundle = msg.getData();
-        byte[] dados = bundle.getByteArray("data");
-        dataString = new String(dados);
-
-        //Pega a data
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-        Date data = new Date();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(data);
-        Date dataAtual = cal.getTime();
-
-        //faz a separação da string de dados
-        String[] sp = dataString.split("\\|");
-        $Token = sp[1];
-        CodigoCenario = sp[2];
-        SerieEquipamento = sp[3];
-        Sensor = sp[4];
-        DataCompleta = dateFormat.format(dataAtual);
-        Temperatura = sp[5];
-
-        if(dataString.equals("---N"))
-            statusMessage.setText("Ocorreu um erro durante a conexão.");
-        else if(dataString.equals("---S"))
-            statusMessage.setText("Conectado!");
-        else {
-            if ($Token != "A"){
-                textSpace.setText($Token + " 1\n"
-                        + CodigoCenario + " 2\n"
-                        + SerieEquipamento + " 3\n"
-                        + Sensor + " 4\n"
-                        + DataCompleta + "\n"
-                        + Temperatura + " 5\n");
-
-            } else {
-                textSpace.setText("Aguardando...");
-            }
-        }
-
-        return dataString;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,54 +125,21 @@ public class MainBluetoothActivity extends ActionBarActivity {
         startActivityForResult(searchPairedDevicesIntent, SELECT_DISCOVERED_DEVICE);
     }
 
-    //public static Handler handler = new Handler() {
     public static Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
 
+            Bundle bundle = msg.getData();
+            byte[] data = bundle.getByteArray("data");
+            String dataString= new String(data);
+
             if(dataString.equals("---N"))
-                statusMessage.setText("Ocorreu um erro durante a conexão.");
+                statusMessage.setText("Ocorreu um erro durante a conexão!");
             else if(dataString.equals("---S"))
-                statusMessage.setText("Conectado!");
-
-            String recebeString = conectaCentral(dataString);
-
-            statusMessage.setText(recebeString);
-
-
-            //if(dataString.equals("---N"))
-            //    statusMessage.setText("Ocorreu um erro durante a conexão.");
-            //else if(dataString.equals("---S"))
-            //    statusMessage.setText("Conectado!");
-            //else {
-                //coloquei esse (!dataString.edquals("|A")
-                //textSpace.setText(new String(dados));
-                //textSpace.setText(dataString);
-
-              //  if ($Token != "A"){
-                    /*textSpace.setText($Token + " 1\n"
-                            + CodigoCenario + " 2\n"
-                            + SerieEquipamento + " 3\n"
-                            + Sensor + " 4\n"
-                            + DataCompleta + "\n"
-                            + Temperatura + " 5\n");*/
-
-                //    textSpace.setText(dataString);
-
-                //} else{
-                  //  textSpace.setText("Aguardando...");
-                   // String[] sp = dataString.split("\\|");
-
-                    /*if(!dataString.equals("A")){
-                        textSpace.setText(sp[1] + " 1\n"
-                                + sp[2] + " 2\n"
-                                + sp[3] + " 3\n"
-                                + sp[4] + " 4\n"
-                                + DataCompleta + "\n"
-                                + sp[5] + " 5\n");*/
-                //}
-
-           // }
+                statusMessage.setText("Conectado.");
+            else {
+                textSpace.setText(new String(data));
+            }
         }
     };
 
