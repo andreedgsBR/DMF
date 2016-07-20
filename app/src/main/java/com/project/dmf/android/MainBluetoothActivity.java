@@ -19,7 +19,13 @@ import android.widget.Toast;
 
 import com.project.dmf.config.R;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -131,7 +137,7 @@ public class MainBluetoothActivity extends ActionBarActivity {
         startActivityForResult(searchPairedDevicesIntent, SELECT_DISCOVERED_DEVICE);
     }
 
-    public static Handler handler = new Handler(){
+    public static Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
 
@@ -148,30 +154,43 @@ public class MainBluetoothActivity extends ActionBarActivity {
 
             try {
                 String dataString = new String(data, "UTF-8"); // for UTF-8 encoding
-                if(dataString.equals("---N"))
+                if (dataString.equals("---N"))
                     statusMessage.setText("Ocorreu um erro durante a conexão!");
-                else if(dataString.equals("---S"))
+                else if (dataString.equals("---S"))
                     statusMessage.setText("Conectado.");
                 else {
                     //textSpace.setText(new String(data));
 
-                    dataString.trim();
-                    String[] sp = dataString.split("\\|");
+                    if ("| ".equals(dataString) || " |".equals(dataString)){
+                        dataString = "teste";
+                    } else{
+                        String valida = String.valueOf(dataString.charAt(1));
+                        if ("T".equals(valida)){
+                            String[] sp = dataString.split("\\|");
+                            System.out.println(dataString);
 
-                    if (sp[1].equals("") || (!sp[1].equals("Token=") )){
-                        sp[1] = "teste";
+                            if (sp[1].equals("") || (!sp[1].equals("Token="))){
+                                sp[1] = "teste";
+                            }
+                            if (sp[1].equals("Token=") && (sp[2].equals("&CodigoCenario=40"))) {
+
+                                String concatenaString = sp[1] + sp[2] + sp[3] + sp[4] + DataCompleta + sp[5];
+
+                                textSpace.setText(concatenaString);
+                                // excutePost("http://www.rotaonline.com.br/Routing.PerforMAXXI.Temperatura.API/Temp", concatenaString);
+
+                            }
+                        } else {
+                            textSpace.setText("Aguardando Dados.");
+                            dataString = null;
+                        }
                     }
-                    if (sp[1].equals("Token=") && (sp[2].equals("&CodigoCenario=40")) ){
-                        concatenaString = sp[1] + sp[2] + sp[3]+ sp[4] + DataCompleta + sp[5];
-                        textSpace.setText(concatenaString);
-                    } else {
-                        textSpace.setText("Aguardando Dados.");
-                    }
-                    //ULTIMO Q FUNCIONO CARAI
                 }
-            } catch (UnsupportedEncodingException e) {
+                //ULTIMO Q FUNCIONO CARAI
+            }catch(UnsupportedEncodingException e){
                 e.printStackTrace();
             }
+
         }
     };
 
@@ -218,5 +237,35 @@ public class MainBluetoothActivity extends ActionBarActivity {
     private void updateBanco(String delete){
         //recebe uma string como parametro, no caso a string que faltou enviar quando estava sem conexao
         db.execSQL("DELETE FROM lista WHERE dados = '" + delete + "'", null);
+    }
+
+    //metodo e tratamento POST
+    public static String excutePost(String targetURL, String urlParameters)    {
+        URL url;
+        HttpURLConnection connection = null;
+        String postParameters = null;
+
+        try {
+            //Conexão
+            url = new URL("http://www.rotaonline.com.br/Routing.PerforMAXXI.Temperatura.API/Temp");
+            connection =
+                    (HttpURLConnection) url.openConnection();
+            connection.setDoOutput(true);
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type",
+                    "application/x-www-form-urlencoded");
+
+            connection.setFixedLengthStreamingMode(postParameters.getBytes().length); // A STRING VAI AQUI
+            PrintWriter out = new PrintWriter(connection.getOutputStream());
+            out.print(postParameters);
+            out.close();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return postParameters;
     }
 }
