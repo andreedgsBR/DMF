@@ -3,6 +3,8 @@ package com.project.dmf.android;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import static android.content.Context.*;
+
 public class MainBluetoothActivity extends ActionBarActivity {
 
     public static int ENABLE_BLUETOOTH = 1;
@@ -33,24 +37,25 @@ public class MainBluetoothActivity extends ActionBarActivity {
     static TextView textSpace;
     ConnectionThread connect;
 
+    SQLiteDatabase db;
+    private static String TABLE_FILA = "CREATE TABLE IF NOT EXISTS fila (" +
+            "dados VARCHAR" +
+            ");";
+
+    private static String concatenaString = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Array pra pegar oq ta guardado no banco
-        ArrayList<String> dados = null;
-        DB_Manager dbManager = new DB_Manager(this);
-
-        for (int i=0; i<10; i++) {
-            dbManager.addItens("Item " + 1);
-        }
-
-        dados = dbManager.getAllItens();
-
         //cria os widgets
         statusMessage = (TextView) findViewById(R.id.statusMessage);
         textSpace = (TextView) findViewById(R.id.textSpace);
+
+        //banco de dados
+        db = openOrCreateDatabase("dmfDB", Context.MODE_PRIVATE, null);
+        db.execSQL(TABLE_FILA);
 
         BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
         if (btAdapter == null) {
@@ -66,7 +71,6 @@ public class MainBluetoothActivity extends ActionBarActivity {
             }
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -155,14 +159,10 @@ public class MainBluetoothActivity extends ActionBarActivity {
                     String[] sp = dataString.split("\\|");
 
                     if (sp[1].equals("") || (!sp[1].equals("Token=") )){
-
                         sp[1] = "teste";
                     }
-
                     if (sp[1].equals("Token=") && (sp[2].equals("&CodigoCenario=40")) ){
-
-                        String concatenaString = sp[1] + sp[2] + sp[3]+ sp[4] + DataCompleta + sp[5];
-
+                        concatenaString = sp[1] + sp[2] + sp[3]+ sp[4] + DataCompleta + sp[5];
                         textSpace.setText(concatenaString);
                     } else {
                         textSpace.setText("Aguardando Dados.");
@@ -177,7 +177,7 @@ public class MainBluetoothActivity extends ActionBarActivity {
 
     public  boolean verificaConexao() {
         boolean conectado;
-        ConnectivityManager conectivtyManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager conectivtyManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         if (conectivtyManager.getActiveNetworkInfo() != null
                 && conectivtyManager.getActiveNetworkInfo().isAvailable()
                 && conectivtyManager.getActiveNetworkInfo().isConnected()) {
@@ -191,14 +191,32 @@ public class MainBluetoothActivity extends ActionBarActivity {
             conectado = false;
 
             //include no banco
+            //chama o metodo salvaBanco e passa o concatenaString como o parametro q recebe lá no metodo
+            salvaBanco(concatenaString);
 
         }
         return conectado;
     };
 
-    /*//metodo de chamar um toast
-    private void msg(String s){
+    //metodo de chamar um toast
+    private void msgToast(String s){
         Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
-    }*/
+    }
 
+    private void salvaBanco(String insert){
+        //recebe uma string como parametro, no caso a string concatenada inteira, pra armazenar no banco
+        db.execSQL("INSERT INTO fila VALUES(" +
+                "'"+ insert + "');");
+    }
+
+    private Cursor consultaBanco(){
+        Cursor c = db.rawQuery("SELECT * FROM lista", null);
+        //retorna a query
+        return c;
+    }
+
+    private void updateBanco(String delete){
+        //recebe uma string como parametro, no caso a string que faltou enviar quando estava sem conexao
+        db.execSQL("DELETE FROM lista WHERE dados = '" + delete + "'", null);
+    }
 }
