@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +18,6 @@ import com.project.dmf.config.R;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -45,6 +43,7 @@ public class MainActivity extends ActionBarActivity {
         BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
         if (btAdapter == null) {
             statusMessage.setText("Bluetooth não localizado!");
+            msg("Bluetooth não localizado!");
         } else {
             statusMessage.setText("Bluetooth localizado!");
             if(!btAdapter.isEnabled()) {
@@ -185,9 +184,9 @@ public class MainActivity extends ActionBarActivity {
         return conectado;
     };
 
-    /*//metodo de chamar um toast
+    //metodo de chamar um toast
     private void msg(String s){
         Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
-    }*/
+    }
 
 }
