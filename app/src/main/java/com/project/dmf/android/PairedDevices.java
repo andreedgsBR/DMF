@@ -30,7 +30,7 @@ public class PairedDevices extends ListActivity {
         ListView lv = getListView();
         LayoutInflater inflater = getLayoutInflater();
         View header = inflater.inflate(R.layout.text_header, lv, false);
-        ((TextView) header.findViewById(R.id.textView)).setText("\nDispositivos pareados\n");
+        ((TextView) header.findViewById(R.id.textView)).setText("\nDispositivos Pareados\n");
         lv.addHeaderView(header, null, false);
 
         /*  Usa o adaptador Bluetooth para obter uma lista de dispositivos pareados.

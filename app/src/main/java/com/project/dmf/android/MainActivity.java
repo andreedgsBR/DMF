@@ -143,7 +143,6 @@ public class MainActivity extends ActionBarActivity {
 
             Bundle bundle = msg.getData();
             byte[] data = bundle.getByteArray("data");
-            StringBuilder dataString = new StringBuilder();
             //String dataString= new String(data);
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -153,71 +152,97 @@ public class MainActivity extends ActionBarActivity {
             Date dataAtual = cal.getTime();
             String DataCompleta = ("&DataHora=" + dateFormat.format(dataAtual));
 
-            if (msg.what == 0) {                                     //if message is what we want
-                String readMessage = (String) msg.obj;                                                                // msg.arg1 = bytes from connect thread
-                dataString.append(readMessage);                                      //keep appending to string until ~
-                int endOfLineIndex = dataString.indexOf("~");                    // determine the end-of-line
-                if (endOfLineIndex > 0) {                                           // make sure there data before ~
-                    String dataInPrint = dataString.substring(0, endOfLineIndex);    // extract string
-                    textSpace.setText("Data Received = " + dataInPrint);
-                    //  int dataLength = dataInPrint.length();                          //get length of data received
-                    //txtStringLength.setText("String Length = " + String.valueOf(dataLength));
+            try {
+                String dataString = new String(data, "UTF-8"); // for UTF-8 encoding
+                if (dataString.equals("---N"))
+                    statusMessage.setText("Ocorreu um erro durante a conexão!");
+                else if (dataString.equals("---S"))
+                    statusMessage.setText("Conectado.");
+                else {
+                    //textSpace.setText(new String(data));
 
-                    if (dataString.charAt(0) == '@')                             //if it starts with # we know it is what we are looking for
-                    {
+                    int endOfLineIndex = dataString.indexOf("~");
+                    if (endOfLineIndex > 0) {
+                        textSpace.setText("Data Received = " + dataString);
+                        if (dataString.charAt(0) == '@'){
 
-                        String[] sp = dataString.toString().split("#");
+                            String[] sp = dataString.split("#");
 
-                        String campo1 = sp[1];
-                        String campo2 = sp[2];
-                        String campo3 = sp[3];
+                            String campo1 = sp[1];
+                            String campo2 = sp[2];
+                            String campo3 = sp[3];
 
-                        if (!campo1.equals(null)) {
-                            String concatenaString = sp[0] + sp[1] + sp[2] + sp[3] + DataCompleta + sp[4];
-                            textSpace.setText(concatenaString);
-                            excutePost("http://www.rotaonline.com.br/Routing.PerforMAXXI.Temperatura.API/Temp", concatenaString);
+                            if (!campo1.equals(null)) {
+                                String concatenaString = sp[0] + sp[1] + sp[2] + sp[3] + DataCompleta + sp[4];
+                                textSpace.setText(concatenaString);
+                                excutePost("http://www.rotaonline.com.br/Routing.PerforMAXXI.Temperatura.API/Temp", concatenaString);
+                            }
+                            if (!campo2.equals(null)) {
+                                String concatenaString2 = sp[0] + sp[1] + sp[2] + sp[3] + DataCompleta + sp[4];
+                                textSpace.setText(concatenaString2);
+                                excutePost("http://www.rotaonline.com.br/Routing.PerforMAXXI.Temperatura.API/Temp", concatenaString2);
+                            }
+                            if (!campo3.equals(null)) {
+                                String concatenaString3 = sp[0] + sp[1] + sp[2] + sp[3] + DataCompleta + sp[4];
+                                textSpace.setText(concatenaString3);
+                                excutePost("http://www.rotaonline.com.br/Routing.PerforMAXXI.Temperatura.API/Temp", concatenaString3);
+                            }
+                        }else {
+                            Cursor cursor = consultaBanco();
+
+                            String[] sp = cursor.toString().split("#");
+
+                            String campo1 = sp[1];
+                            String campo2 = sp[2];
+                            String campo3 = sp[3];
+
+                            if (!campo1.equals(null)) {
+                                String concatenaString = sp[0] + sp[1] + sp[2] + sp[3] + DataCompleta + sp[4];
+                                textSpace.setText(concatenaString);
+                                excutePost("http://www.rotaonline.com.br/Routing.PerforMAXXI.Temperatura.API/Temp", concatenaString);
+                            }
+                            if (!campo2.equals(null)) {
+                                String concatenaString2 = sp[0] + sp[1] + sp[2] + sp[3] + DataCompleta + sp[4];
+                                textSpace.setText(concatenaString2);
+                                excutePost("http://www.rotaonline.com.br/Routing.PerforMAXXI.Temperatura.API/Temp", concatenaString2);
+                            }
+                            if (!campo3.equals(null)) {
+                                String concatenaString3 = sp[0] + sp[1] + sp[2] + sp[3] + DataCompleta + sp[4];
+                                textSpace.setText(concatenaString3);
+                                excutePost("http://www.rotaonline.com.br/Routing.PerforMAXXI.Temperatura.API/Temp", concatenaString3);
+                            }
+
                         }
-                        if (!campo2.equals(null)) {
-                            String concatenaString2 = sp[0] + sp[1] + sp[2] + sp[3] + DataCompleta + sp[4];
-                            textSpace.setText(concatenaString2);
-                            excutePost("http://www.rotaonline.com.br/Routing.PerforMAXXI.Temperatura.API/Temp", concatenaString2);
-                        }
-                        if (!campo3.equals(null)) {
-                            String concatenaString3 = sp[0] + sp[1] + sp[2] + sp[3] + DataCompleta + sp[4];
-                            textSpace.setText(concatenaString3);
-                            excutePost("http://www.rotaonline.com.br/Routing.PerforMAXXI.Temperatura.API/Temp", concatenaString3);
-                        }
-                    } else {
-                        Cursor cursor = consultaBanco();
-
-                        String[] sp = cursor.toString().split("#");
-
-                        String campo1 = sp[1];
-                        String campo2 = sp[2];
-                        String campo3 = sp[3];
-
-                        if (!campo1.equals(null)) {
-                            String concatenaString = sp[0] + sp[1] + sp[2] + sp[3] + DataCompleta + sp[4];
-                            textSpace.setText(concatenaString);
-                            excutePost("http://www.rotaonline.com.br/Routing.PerforMAXXI.Temperatura.API/Temp", concatenaString);
-                        }
-                        if (!campo2.equals(null)) {
-                            String concatenaString2 = sp[0] + sp[1] + sp[2] + sp[3] + DataCompleta + sp[4];
-                            textSpace.setText(concatenaString2);
-                            excutePost("http://www.rotaonline.com.br/Routing.PerforMAXXI.Temperatura.API/Temp", concatenaString2);
-                        }
-                        if (!campo3.equals(null)) {
-                            String concatenaString3 = sp[0] + sp[1] + sp[2] + sp[3] + DataCompleta + sp[4];
-                            textSpace.setText(concatenaString3);
-                            excutePost("http://www.rotaonline.com.br/Routing.PerforMAXXI.Temperatura.API/Temp", concatenaString3);
-                        }
-
                     }
-                    dataString.delete(0, dataString.length());                    //clear all string data
-                    // strIncom = " ";
-                    dataInPrint = " ";
+
+                    /*if ("| ".equals(dataString) || " |".equals(dataString)){
+                        dataString = "teste";
+                    } else{
+                        String valida = String.valueOf(dataString.charAt(1));
+                        if ("T".equals(valida)){
+                            String[] sp = dataString.split("\\|");
+                            System.out.println(dataString);
+
+                            if (sp[1].equals("") || (!sp[1].equals("Token="))){
+                                sp[1] = "teste";
+                            }
+                            if (sp[1].equals("Token=") && (sp[2].equals("&CodigoCenario=40"))) {
+
+                                String concatenaString = sp[1] + sp[2] + sp[3] + sp[4] + DataCompleta + sp[5];
+
+                                textSpace.setText(concatenaString);
+                                // excutePost("http://www.rotaonline.com.br/Routing.PerforMAXXI.Temperatura.API/Temp", concatenaString);
+
+                            }
+                        } else {
+                            textSpace.setText("Aguardando Dados.");
+                            dataString = null;
+                        }
+                    }*/
                 }
                 //ULTIMO Q FUNCIONO CARAI
+            }catch(UnsupportedEncodingException e){
+                e.printStackTrace();
             }
         }
     };
@@ -246,25 +271,34 @@ public class MainActivity extends ActionBarActivity {
     };
 
     //metodo de chamar um toast
-    private void msgToast(String s){
-        Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+    private void msgToast(String s) {
+        Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
     }
 
-    private void salvaBanco(String insert){
+    private static void salvaBanco(String insert) {
         //recebe uma string como parametro, no caso a string concatenada inteira, pra armazenar no banco
         db.execSQL("INSERT INTO fila VALUES(" +
-                "'"+ insert + "');");
+                "'" + insert + " " +
+                "N');");
     }
 
-    public static Cursor consultaBanco(){
-        Cursor c = db.rawQuery("SELECT * FROM lista", null);
+    private static Cursor consultaBanco() {
+        Cursor c = db.rawQuery("SELECT * FROM lista WHERE enviado = 'N'", null);
         //retorna a query
         return c;
     }
 
-    private void updateBanco(String delete){
+    private void updateBanco() {
         //recebe uma string como parametro, no caso a string que faltou enviar quando estava sem conexao
-        db.execSQL("DELETE FROM lista WHERE dados = '" + delete + "'", null);
+        db.execSQL("UPDATE FROM lista " +
+                "SET enviado = 'S'" +
+                "WHERE envaido = 'N'");
+    }
+
+    private void deleteBanco() {
+        //recebe uma string como parametro, no caso a string que faltou enviar quando estava sem conexao
+        db.execSQL("DELETE FROM lista " +
+                "WHERE envaido = 'S'", null);
     }
 
     //metodo e tratamento POST
