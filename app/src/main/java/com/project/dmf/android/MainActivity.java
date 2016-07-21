@@ -146,7 +146,7 @@ public class MainActivity extends Activity {
 
 
         // Set up onClick listeners for buttons to send 1 or 0 to turn on/off LED
-        btnOff.setOnClickListener(new OnClickListener() {
+       /* btnOff.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 mConnectedThread.write("0");    // Send "0" via Bluetooth
                 Toast.makeText(getBaseContext(), "Turn off LED", Toast.LENGTH_SHORT).show();
@@ -158,7 +158,7 @@ public class MainActivity extends Activity {
                 mConnectedThread.write("1");    // Send "1" via Bluetooth
                 Toast.makeText(getBaseContext(), "Turn on LED", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
     }
 
 
