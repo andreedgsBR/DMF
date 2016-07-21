@@ -141,8 +141,23 @@ public class MainActivity extends Activity {
             }
         };
 
-        btAdapter = BluetoothAdapter.getDefaultAdapter();       // get Bluetooth adapter
-        checkBTState();
+        BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (btAdapter == null) {
+            msgToast("Bluetooth não localizado!");
+            //statusMessage.setText("Bluetooth não localizado!");
+        } else {
+            msgToast("Bluetooth localizado.");
+            //statusMessage.setText("Bluetooth localizado.");
+            if (!btAdapter.isEnabled()) {
+                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(enableBtIntent, 1);
+                msgToast("Solicitando ativação do Bluetooth...");
+                //statusMessage.setText("Solicitando ativação do Bluetooth...");
+            } else {
+                msgToast("Bluetooth já ativado.");
+                //statusMessage.setText("Bluetooth já ativado.");
+            }
+        }
 
 
         // Set up onClick listeners for buttons to send 1 or 0 to turn on/off LED
