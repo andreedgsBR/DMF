@@ -23,18 +23,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="com.project.dmf.android.PairedDevices"
-            android:label="Paired Devices"
-            android:parentActivityName="com.project.dmf.android.MainActivity" >
-        </activity>
-
-        <activity
-            android:name="com.project.dmf.android.DiscoveredDevices"
-            android:label="Discovered Devices"
-            android:parentActivityName="com.project.dmf.android.MainActivity" >
-        </activity>
-
     </application>
 
 </manifest>
